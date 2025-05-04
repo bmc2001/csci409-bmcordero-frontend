@@ -1,34 +1,35 @@
-async function fetchLines() {
+// app/route/page.tsx
+async function fetchRoutes() {
     const username = 'admin';
     const password = 'password123';
     const auth = Buffer.from(`${username}:${password}`).toString('base64');
-    const res = await fetch('http://localhost:8000/lines', {
+    const res = await fetch('http://localhost:8000/routes', {
         headers: {
             Authorization: `Basic ${auth}`,
         },
         cache: 'no-store',
     });
-    if (!res.ok) throw new Error('Failed to fetch lines');
+    if (!res.ok) throw new Error('Failed to fetch routes');
     const data = await res.json();
-    return data.lines;
+    return data.routes;
 }
-export default async function LineListPage() {
-    const lines = await fetchLines();
+export default async function RouteListPage() {
+    const routes = await fetchRoutes();
     return (
         <div>
-            <h1>Available Lines</h1>
+            <h1>Available Routes</h1>
             <ul style={{ listStyle: 'none', padding: 0 }}>
-                {lines.map((line: any) => (
-                    <li key={line.id} style={{
-                        backgroundColor: line.color,
-                        color: line.text_color,
+                {routes.map((route: any) => (
+                    <li key={route.id} style={{
+                        backgroundColor: route.color,
+                        color: route.text_color,
                         padding: '1rem',
                         marginBottom: '0.5rem',
                         borderRadius: '8px'
                     }}>
-                        <a href={`/lines/${line.id}`} style={{ textDecoration:
+                        <a href={`/route/${route.id}`} style={{ textDecoration:
                                 'none', color: 'inherit' }}>
-                            {line.long_name}
+                            {route.long_name}
                         </a>
                     </li>
                 ))}
